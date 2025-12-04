@@ -1,6 +1,9 @@
-name: Continuous Integration
+# File: .github/workflows/ci.yml
+
+name: CI - Code Quality Checks
 
 on:
+  # Triggers the workflow on push or pull request events for the main and task-* branches
   push:
     branches: [ main, task-* ]
   pull_request:
@@ -10,11 +13,28 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python 3.x
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.x'
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-    # Add linting/testing steps here
+      # Step 1: Checks out your repository under $GITHUB_WORKSPACE
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2: Sets up Python 3.10 environment
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # Step 3: Installs dependencies, including flake8 for linting
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          # Add flake8 to requirements.txt or install here
+          pip install -r requirements.txt
+          pip install flake8
+
+      # Step 4: Lints the Python code (checks for common errors and style issues)
+      - name: Run Flake8 Linting
+        run: |
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Exit-code 0 means no issues found
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
