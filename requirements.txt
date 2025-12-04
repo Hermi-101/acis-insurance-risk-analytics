@@ -4,3 +4,8 @@ numpy
 matplotlib
 seaborn
 
+# Statistical Modeling and Testing
+scipy
+statsmodels
+scikit-learn
+xgboost
