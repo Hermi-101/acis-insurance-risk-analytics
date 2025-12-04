@@ -1,0 +1,6 @@
+# Core Data Analysis and Visualization
+pandas
+numpy
+matplotlib
+seaborn
+
